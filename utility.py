@@ -1,5 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
 plt.style.use('ggplot')
 
 def plot_history(history, title=''):
@@ -25,11 +27,12 @@ def plot_history(history, title=''):
     plt.legend()
     
     
-def plot_convolutions(nn_model, image_example, take=None, title=None):
+def plot_convolutions(nn_model, image_example, take=None, title=None, printable_layers=None):
     vector = np.array([image_example])
     
     # no point in watching anything that is not convolution or input layer
-    printable_layers = ['input', 'conv']
+    if printable_layers is None:
+        printable_layers = ['input', 'conv']
     layers = [layer for layer in nn_model.layers if any([layer.name.startswith(pl_name) for pl_name in printable_layers])]
     layer_names = [layer.name for layer in layers]
     
@@ -50,7 +53,7 @@ def plot_convolutions(nn_model, image_example, take=None, title=None):
 
         vis_result_raveled = vis_result[0]
         # no point in watching 1x1 convolutions just by themselves
-        if vis_result_raveled.shape[0] is 1 or vis_result_raveled.shape[1] is 1:
+        if len(vis_result_raveled.shape) < 2 or vis_result_raveled.shape[0] is 1 or vis_result_raveled.shape[1] is 1:
             continue
 
         dimensions = vis_result_raveled.shape[2]
@@ -102,7 +105,7 @@ def plot_filters(nn_model, layer_index=1):
     filters_count = filters.shape[3]
     channel_count = filters.shape[2]
     plot_index = 1
-    fig = plt.figure(figsize=(8, 16))
+    fig = plt.figure(figsize=(8, 1 * filters_count))
     for i in range(0, filters_count):
         single_filter = filters[:, :, :, i]
         for j in range(0, channel_count):

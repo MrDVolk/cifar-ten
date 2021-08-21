@@ -6,3 +6,5 @@ __pycache__/utility.cpython-37.pyc
 .ipynb_checkpoints/README-checkpoint.md
 .ipynb_checkpoints/utility-checkpoint.py
 __pycache__/utility.cpython-39.pyc
+.ipynb_checkpoints/cifar_ten_final-checkpoint.ipynb
+models/best_weights_final - Copy.hdf5
